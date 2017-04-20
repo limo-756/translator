@@ -66,5 +66,89 @@ class Database
         }
         return rs;
     }
-
+}
+/**
+ * This class makes file handeling easy
+ */
+class FileRead
+{
+    private String filePath;
+    private File file;
+    private Scanner inputFile;
+    /**
+     * This function returns a file pointer to desired file
+     * @param filePath path of the desired file
+     */
+    FileRead(String filePath)
+    {
+        this.filePath=filePath;
+        // Open the file.
+        try
+        {
+            file = new File(filePath);
+            inputFile = new Scanner(file);
+        }
+        catch(FileNotFoundException e)
+        {
+            System.out.println("File not found"+filePath);
+        }
+    }
+    void fileClose()
+    {
+        inputFile.close();
+        // file.close();
+    }
+    String readNextLine()
+    {
+            String line = inputFile.nextLine();
+            line=line.trim();
+            line=line.toLowerCase();
+            return line;
+    }
+    boolean hasNextLine()
+    {
+        return inputFile.hasNext();
+    }
+}
+class FileWrite
+{
+    BufferedWriter bw = null;
+    FileWriter fw = null;
+    FileWrite(String filename)
+    {
+        try
+        {
+            fw = new FileWriter(filename);
+            bw = new BufferedWriter(fw);
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+    void writeContent(String content)
+    {
+        try
+        {
+            bw.write(content);
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+    void fileClose()
+    {
+        try
+        {
+            if (bw != null)
+                bw.close();
+            if (fw != null)
+                fw.close();
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
 }
