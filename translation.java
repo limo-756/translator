@@ -83,4 +83,26 @@ class Rules
             }
         }
     }
+    String[] ruleTransformer(HashMap<String,String> map)
+    {
+        if(map.isEmpty())
+        {
+            System.out.println("Error : Please give a correct sentence");
+            return null ;
+        }
+        String translatedSentence[] = new String[matchLength];
+        for (int i=0;i<matchLength ;i++ )
+        {
+            String words[]=matchingTargetRules[i].split(" ");
+            translatedSentence[i]=new String();
+            for (int j=0;j<words.length;j++ )
+            {
+                if (map.containsKey(words[j]))
+                {
+                    translatedSentence[i]=translatedSentence[i]+" "+map.get(words[j]);
+                }
+            }
+        }
+        return translatedSentence;
+    }
 }
