@@ -105,4 +105,29 @@ class Rules
         }
         return translatedSentence;
     }
+    void updateRules(String rule,String translatedRule)
+    {
+        boolean inserted=false;
+        for (int i=0;i<length ;i++ )
+        {
+            if(rule.equals(sourceRules[i]))
+            {
+                targetRules[i]=translatedRule;
+                inserted=true;
+                break;
+            }
+        }
+        if(!inserted)
+        {
+            sourceRules[length]=rule;
+            targetRules[length++]=translatedRule;
+        }
+        FileWrite write=new FileWrite(ruleFilePath);
+        for (int i=0;i<length;i++ )
+        {
+            write.writeContent(sourceRules[i]+lineEnding);
+            write.writeContent(targetRules[i]+lineEnding);
+        }
+        write.fileClose();
+    }
 }
