@@ -63,4 +63,45 @@ class Parser
         }
         decoding();
     }
+    /**
+     * it decodes every line and call other function to
+     * evaluate and execute line
+     */
+    void decoding()
+    {
+        boolean normalBlock=true;
+        boolean ifBlock=false;
+        boolean elseBlock=false;
+        boolean condition=false;
+        for (int i=0;i<len ;i++ )
+        {
+            String words[]=lineArray[i].split(" ");
+            if(!commentLine(words[0]))
+            {
+                if(ifCondition(words[0]))
+                {
+                    normalBlock=false;
+                    ifBlock=true;
+                    elseBlock=false;
+                    condition=evaluateCondition(lineArray[i]);
+                }
+                else if(elseFinder(words[0]))
+                {
+                    normalBlock=false;
+                    ifBlock=false;
+                    elseBlock=true;
+                }
+                else if(end(words[0]))
+                {
+                    normalBlock=true;
+                    ifBlock=false;
+                    elseBlock=false;
+                    condition=false;
+                }
+                else if(normalBlock || (ifBlock && condition) || (elseBlock && !(condition)))
+                    execute(lineArray[i]);
+            }
+        }
+    }
+
 }
