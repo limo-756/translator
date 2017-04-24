@@ -45,4 +45,22 @@ class Parser
         }
         fp.fileClose();
     }
+    void fileOpen(String file)
+    {
+        FileRead fp = new FileRead(file);
+        len=0;
+        while(fp.hasNextLine())
+            lineArray[len++]=fp.readNextLine();
+        fp.fileClose();
+    }
+    void pass1(String bugySentence)
+    {
+        fileOpen(getFilePath);
+        String word[]=bugySentence.split(" ");
+        for (int i=0;i<word.length ;i++ )
+        {
+            bugyArray.add(word[i]);
+        }
+        decoding();
+    }
 }
