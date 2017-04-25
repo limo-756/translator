@@ -63,10 +63,6 @@ class Parser
         }
         decoding();
     }
-    /**
-     * it decodes every line and call other function to
-     * evaluate and execute line
-     */
     boolean commentLine(String word)
     {
         return word.equals("//");
@@ -83,6 +79,94 @@ class Parser
     {
         return word.equals("end");
     }
+    /**
+     * it checks the whole condition
+     * @param  line it contains the condition to be evaluated
+     * @return      it returns boolean values
+     */
+    boolean evaluateCondition(String line)
+    {
+        boolean status=false;
+        String word[]=line.split(" ");
+        if(condition(word[1]))
+            status=true;
+        for (int i=2;i<word.length ;i=i+2 )
+        {
+            if(word[i].equals("and"))
+                status=status && condition(word[i+1]);
+            else
+                status=status || condition(word[i+1]);
+        }
+        return status;
+    }
+    /**
+     * it evalute the single condition
+     * @param  operands condition
+     * @return      boolean values
+     */
+    boolean condition(String operands)
+    {
+        boolean returnValue=false;
+        boolean negation=false;
+        if(operands.indexOf("!")!=-1)
+        {
+            negation=true;
+            int start=operands.indexOf("!")+1;
+            operands=operands.substring(start);
+        }
+        if(operands.indexOf("'")==-1)
+        {
+            if(operands.indexOf("=")!=-1)
+            {
+                String word[]=UtilityClass.breakTheSentence(operands,'=');
+                returnValue=(property[propMap.get(word[0])]==value[valueMap.get(word[1])]) ? true : false;
+            }
+            else
+            {
+                if(map.containsKey(operands))
+                    returnValue=true;
+            }
+        }
+        else
+        {
+            operands=getLiteral(operands);
+            String word[]=UtilityClass.breakTheSentence(operands,'-');
+            boolean temp=true;
+            for (int i=0;i<word.length ;i++ )
+            {
+                if(!bugyArray.contains(word[i]))
+                {
+                    temp = false;
+                    break;
+                }
+            }
+            if(temp==true)
+                returnValue = true;
+            else
+                returnValue = false;
+        }
+        if(negation==true)
+            return !(returnValue);
+        else
+            return returnValue;
+    }
+    String getLiteral(String str)
+    {
+        int start=str.indexOf("'")+1;
+        int end=str.lastIndexOf("'");
+        return str.substring(start,end);
+    }
+    boolean checkLiteral(String word)
+    {
+        if(word.indexOf("'")!=-1)
+            return true;
+        else
+            return false;
+    }
+    /**
+     * it decodes every line and call other function to
+     * evaluate and execute line
+     */
     void decoding()
     {
         boolean normalBlock=true;
