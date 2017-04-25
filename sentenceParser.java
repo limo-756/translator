@@ -67,6 +67,22 @@ class Parser
      * it decodes every line and call other function to
      * evaluate and execute line
      */
+    boolean commentLine(String word)
+    {
+        return word.equals("//");
+    }
+    boolean ifCondition(String word)
+    {
+        return word.equals("if");
+    }
+    boolean elseFinder(String word)
+    {
+        return word.equals("else");
+    }
+    boolean end(String word)
+    {
+        return word.equals("end");
+    }
     void decoding()
     {
         boolean normalBlock=true;
