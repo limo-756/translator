@@ -164,6 +164,67 @@ class Parser
             return false;
     }
     /**
+     * it executes the statement
+     * @param line statement
+     * '.' add word after
+     * '=' set property
+     * '$' append word
+     */
+    void execute(String line)
+    {
+        if(line.indexOf("=")!=-1)
+        {
+            String word[]=UtilityClass.breakTheSentence(line,'=');
+            property[propMap.get(word[0])]=value[valueMap.get(word[1])];
+        }
+        else if(line.indexOf(".")!=-1)
+        {
+            String word[]=UtilityClass.breakTheSentence(line,'.');
+            if(checkLiteral(word[1]))
+                word[1]=getLiteral(word[1]);
+            if(word[0].indexOf("'")==-1)
+            {
+                if(bugyArray.contains(map.get(word[0])))
+                {
+                    int temp=bugyArray.indexOf(map.get(word[0]));
+                    bugyArray.add(temp+1,word[1]);
+                }
+            }
+            else
+            {
+                word[0]=getLiteral(word[0]);
+                if(bugyArray.contains(word[0]))
+                {
+                    int temp=bugyArray.indexOf(word[0]);
+                    bugyArray.add(temp+1,word[1]);
+                }
+            }
+        }
+        else if(line.indexOf("$")!=-1)
+        {
+            String word[]=UtilityClass.breakTheSentence(line,'$');
+            if(checkLiteral(word[1]))
+                word[1]=getLiteral(word[1]);
+            if(word[0].indexOf("'")==-1)
+            {
+                if(bugyArray.contains(map.get(word[0])))
+                {
+                    int temp=bugyArray.indexOf(map.get(word[0]));
+                    bugyArray.set(temp,map.get(word[0])+word[1]);
+                }
+            }
+            else
+            {
+                word[0]=getLiteral(word[0]);
+                if(bugyArray.contains(word[0]))
+                {
+                    int temp=bugyArray.indexOf(word[0]);
+                    bugyArray.set(temp,word[0]+word[1]);
+                }
+            }
+        }
+    }
+    /**
      * it decodes every line and call other function to
      * evaluate and execute line
      */
