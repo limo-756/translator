@@ -63,6 +63,27 @@ class Parser
         }
         decoding();
     }
+    String pass2(String bugySentence,HashMap<String,String> map)
+    {
+        fileOpen(specificSyntaxFilePath);
+        bugyArray.clear();
+        String word[]=bugySentence.split(" ");
+        this.map=map;
+        for (int i=0;i<word.length ;i++ )
+        {
+            bugyArray.add(word[i]);
+        }
+        decoding();
+        String result=null;
+        for (int i=0;i<bugyArray.size();i++)
+        {
+            if(i==0)
+                result=""+bugyArray.get(i);
+            else
+                result=result+" "+bugyArray.get(i);
+        }
+        return result;
+    }
     boolean commentLine(String word)
     {
         return word.equals("//");
